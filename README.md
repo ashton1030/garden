@@ -23,6 +23,8 @@
 - `CLOUDFLARE_API_TOKEN`: 해당 계정의 Worker 및 D1 배포에 필요한 권한만 가진 API token
 - `ADMIN_TOKEN_HASH`: 마스터 코드의 SHA-256 해시
 
+[GitHub Actions secrets 설정](https://github.com/ashton1030/garden/settings/secrets/actions)에서 위 값을 저장하세요. 외부 조직이 자체 계정에 배포한다면 해당 조직의 저장소와 Cloudflare 계정에 각각 같은 이름의 secrets를 설정해야 합니다.
+
 마스터 코드와 해시를 로컬에서 한 번 생성합니다.
 
 ```sh
@@ -31,7 +33,7 @@ node scripts/generate-admin-token.mjs
 
 출력된 `ADMIN_TOKEN_HASH`만 GitHub secret으로 저장하고, 원문 `ADMIN_TOKEN`은 비밀리에 보관합니다. 원문 코드는 Worker 주소에 `/master#<ADMIN_TOKEN>`을 붙여 관리 화면을 열 때 사용합니다. 코드를 저장소나 이슈에 올리지 마세요.
 
-첫 배포 때 Wrangler가 `DB` 바인딩용 D1 데이터베이스를 생성하고, Workflow가 `drizzle/`의 미적용 마이그레이션을 적용합니다. 배포가 완료되면 GitHub Actions 로그에서 Worker URL을 확인할 수 있습니다. Cloudflare의 API token은 저장소 코드에 넣지 말고 GitHub Actions secrets로만 설정하세요.
+세 secrets를 저장한 뒤에는 [Actions](https://github.com/ashton1030/garden/actions)에서 **Deploy to Cloudflare Workers**를 열고 **Run workflow**를 실행하세요. 이후 `main`에 push할 때마다 자동 배포됩니다. 첫 배포 때 Wrangler가 `DB` 바인딩용 D1 데이터베이스를 생성하고, Workflow가 `drizzle/`의 미적용 마이그레이션을 적용합니다. 배포가 완료되면 GitHub Actions 로그에서 Worker URL을 확인할 수 있습니다. Cloudflare의 API token은 저장소 코드에 넣지 말고 GitHub Actions secrets로만 설정하세요.
 
 ## 로컬 빌드
 
